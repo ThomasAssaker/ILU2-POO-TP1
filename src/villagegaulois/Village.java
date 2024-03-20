@@ -95,7 +95,7 @@ public class Village {
 					}
 		}
 			return null;
-		}
+		} 
 		public String afficherMarche () {
 			StringBuilder result = new StringBuilder();
 			int nbEtalVide = 0;
