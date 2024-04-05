@@ -98,7 +98,7 @@ public void libererEtal() throws EtalNonOccupeException {
 }
 
 	public boolean contientProduit(String produit) {
-		return this.produit.equals(produit);
+		return produit.equals(this.produit);
 	}
 	
 }
