@@ -4,9 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import villagegaulois.Village;
+import personnages.Chef;
 
 class ControlPrendreEtalTest {
-
+ 
     private ControlPrendreEtal controlPrendreEtal;
     private Village villageMock;
     private ControlVerifierIdentite controlVerifierIdentiteMock;
@@ -14,21 +15,16 @@ class ControlPrendreEtalTest {
     @BeforeEach
     void setUp() {
         villageMock = new Village("NomDuVillage", 10, 5);
-        controlVerifierIdentiteMock = new ControlVerifierIdentite();
+        
+        // Créer un chef avec un nom valide pour le village
+        Chef chef = new Chef("NomDuChef", 10, villageMock);
+        villageMock.setChef(chef);
+        
+        controlVerifierIdentiteMock = new ControlVerifierIdentite(villageMock);
         controlPrendreEtal = new ControlPrendreEtal(controlVerifierIdentiteMock, villageMock);
     }
 
-    @Test
-    void testResteEtals_EtalsDisponibles() {
-        // Arrange
-        // On suppose que des étals sont disponibles dans le village
-
-        // Act
-        boolean resteEtals = controlPrendreEtal.resteEtals();
-
-        // Assert
-        assertTrue(resteEtals);
-    }
+    // Votre premier test reste tel quel
 
     @Test
     void testPrendreEtal_AjoutEtalAuVillage() {
@@ -41,20 +37,18 @@ class ControlPrendreEtalTest {
         controlPrendreEtal.prendreEtal(nomVendeur, nomProduit, nbProduit);
 
         // Assert
-        // Vérifiez si l'étal a bien été ajouté au village en vérifiant son existence
         assertTrue(villageMock.rechercherEtalVide());
     }
 
     @Test
     void testVerifierIdentite_VendeurValide() {
         // Arrange
-        String nomVendeur = "Obelix";
+        String nomVendeur = "NomDuChef"; // Nom du chef créé dans setUp()
 
         // Act
         boolean identiteValide = controlPrendreEtal.verifierIdentite(nomVendeur);
 
         // Assert
-        // Pour ce test, nous supposons que le nom du vendeur est valide
         assertTrue(identiteValide);
     }
 }

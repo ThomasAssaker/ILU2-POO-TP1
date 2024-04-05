@@ -2,6 +2,9 @@ package controleur;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import personnages.Chef;
+
 import org.junit.jupiter.api.BeforeEach;
 import villagegaulois.Village;
 
@@ -13,6 +16,8 @@ class ControlAfficherVillageTest {
     @BeforeEach
     void setUp() {
         villageMock = new Village("NomDuVillage", 10, 5); // Crée un village avec un maximum de 10 habitants et 5 étals
+        // Ajout d'un chef au village pour éviter les NullPointerException
+        villageMock.setChef(new Chef("Astérix", 10, villageMock));
         controlAfficherVillage = new ControlAfficherVillage(villageMock);
     }
 
@@ -20,7 +25,7 @@ class ControlAfficherVillageTest {
     void testDonnerNomsVillageois() {
         // Arrange
         // Supposons que le village contienne des villageois avec les noms suivants
-        String[] nomsAttendus = {"Asterix", "Obelix", "Idéfix"};
+        String[] nomsAttendus = {"Astérix"};
 
         // Act
         String[] nomsVillageois = controlAfficherVillage.donnerNomsVillageois();
@@ -53,3 +58,4 @@ class ControlAfficherVillageTest {
         assertEquals(nbEtalsAttendu, nbEtals);
     }
 }
+

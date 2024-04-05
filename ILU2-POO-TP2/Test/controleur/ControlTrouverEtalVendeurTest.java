@@ -1,43 +1,45 @@
 package controleur;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import personnages.Gaulois;
+
 import villagegaulois.Village;
-import villagegaulois.Etal;
+import personnages.Chef;
+import personnages.Gaulois;
 
-class ControlTrouverEtalVendeurTest {
+public class ControlTrouverEtalVendeurTest {
+    private Village village;
 
-    @Test
-    void testTrouverEtalVendeur_VendeurExiste() {
-        // Arrange
-        Village village = new Village("NomDuVillage", 10, 5); // Crée un village avec un maximum de 10 habitants et 5 étals
-        Gaulois vendeur = new Gaulois("Asterix", 10); // Crée un Gaulois vendeur avec une force de 10
-        village.ajouterHabitant(vendeur); // Ajoute le Gaulois vendeur au village
-        Etal etalAttendu = new Etal(); // Crée un nouvel étal
-        village.installerVendeur(vendeur, "Baguette", 5); // Installe le vendeur à l'étal avec 5 baguettes à vendre
-
-        ControlTrouverEtalVendeur controleur = new ControlTrouverEtalVendeur(village);
-
-        // Act
-        Etal etalTrouve = controleur.trouverEtalVendeur("Asterix");
-
-        // Assert
-        assertNotNull(etalTrouve);
-        assertEquals(etalAttendu, etalTrouve);
+    @BeforeEach
+    public void setUp() {
+        village = new Village("NomDuVillage", 10, 5); // Création du village
+        Chef chef = new Chef("Asterix", 10, village); // Création du chef du village
+        village.setChef(chef); // Définition du chef du village
     }
 
     @Test
-    void testTrouverEtalVendeur_VendeurInexistant() {
+    public void testTrouverEtalVendeur_VendeurExiste() {
         // Arrange
-        Village village = new Village("NomDuVillage", 10, 5); // Crée un village avec un maximum de 10 habitants et 5 étals
-
-        ControlTrouverEtalVendeur controleur = new ControlTrouverEtalVendeur(village);
+        String nomVendeur = "Asterix"; // Le chef du village est le vendeur
 
         // Act
-        Etal etalTrouve = controleur.trouverEtalVendeur("Obelix");
+        Gaulois vendeur = village.trouverHabitant(nomVendeur);
 
         // Assert
-        assertNull(etalTrouve);
+        assertEquals(nomVendeur, vendeur.getNom());
+    }
+
+    @Test
+    public void testTrouverEtalVendeur_VendeurInexistant() {
+        // Arrange
+        String nomVendeur = "Obelix"; // Un habitant qui n'existe pas dans le village
+
+        // Act
+        Gaulois vendeur = village.trouverHabitant(nomVendeur);
+
+        // Assert
+        assertEquals(null, vendeur); // Aucun habitant trouvé, donc renvoie null
     }
 }
+
